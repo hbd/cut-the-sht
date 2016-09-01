@@ -1,24 +1,14 @@
 // Perform a reload any time the user clicks "Save"
 chrome.storage.onChanged.addListener(function(changes, namespace) {
-  var shits = ["fromshit", "toshit"];
+  var numshits
+  var shits = ["allfromshits", "alloftoshits"];
   console.log("CHANGED!!")
+
   chrome.storage.sync.get(shits, function(items) {
     if (!chrome.runtime.error) {
       console.log(items);
-      console.log("change: " + items.fromshit)
-      console.log("change: " + items.toshit)
+      console.log("change: " + items.allfromshits)
+      console.log("change: " + items.alloftoshits)
     }
   });
 });
-
-
-chrome.browserAction.onClicked.addListener(function(tab) {
-  var shits = ["fromshit", "toshit"];
-  chrome.storage.sync.get(shits, function(items) {
-    if (!chrome.runtime.error) {
-      console.log("items: "+ items);
-      /* document.getElementById("data").innerText = items.data;*/
-    }
-  })
-})
-

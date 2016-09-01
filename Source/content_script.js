@@ -34,6 +34,7 @@ function handleText(textNode)
   var toshit = "";
   var shits = ["fromshit", "toshit"];
 
+
   console.log("CHANGED!!")
   chrome.storage.sync.get(shits, function(items) {
     if (!chrome.runtime.error) {
@@ -44,25 +45,12 @@ function handleText(textNode)
       toshit = items.toshit;
  }
 
-    console.log("!!!!! CONTENT")
-
-    /* var b = textNode.nodeValue;*/
     var reg = new RegExp(frshit, 'gi') // i: case-insensitive
-//    var reg = /\bThe Cloud\b/gi
-//    var reg = new RegExp("[\s\S]*") // i: case-insensitive
-//    v = v.replace(reg, "dick dick");
 
     console.log("REPLACING "+ reg +" with "+ toshit)
-//    console.log("REPLACING "+ reg2 +" with "+ toshit)
     v = v.replace(reg, toshit);
-    /* b = b.replace(reg2, "dick dick");*/
-    v = v.replace(/\hello\b/gi, toshit);  //check all occurances of whole phrase (not just "the" or "cloud")
-    v = v.replace('/\b'+frshit+'\b/g', "dick");
-    v = v.replace(/\bthe cloud\b/g, "dick dick");
 
     textNode.nodeValue = v;
-    /* textNode.nodeValue = b;*/
-    console.log("!!!!! CONTENT 2 !!!!!")
   });
 }
 

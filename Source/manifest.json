@@ -3,6 +3,9 @@
   "version": "1.2",
   "manifest_version": 2,
   "description": "Replaces some shit with other shit.",
+  "icons": { "16": "images/button_icon16.png",
+	     "48": "images/button_icon48.png",
+	     "128": "images/button_icon128.png" },
   "browser_action": {
     "default_popup": "popup.html"
   },

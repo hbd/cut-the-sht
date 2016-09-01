@@ -45,6 +45,7 @@ function add_icons() {
 
   instaIcon.src = instaIconURL
   instaIcon.alt = "Share on Instagram!"
+  instaIconURL.align = "left"
 
   aInsta.appendChild(instaIcon)
   body.appendChild(aInsta)
@@ -56,6 +57,7 @@ function add_icons() {
 
   twitIcon.src = twitIconURL
   twitIcon.alt = "Share on Twitter!"
+  twitIcon.align = "right"
 
   aTwit.href = twitPageURL
   aTwit.target = "_blank"
@@ -78,7 +80,45 @@ document.getElementById("showShit").onclick = function() {
   clear_table()
   generate_table();
 }
+// call function to save shit to storage
+document.getElementById("saveShit").onclick = function() {
+  ga('send', 'event', 'button', 'saveShit', 'Front Page')
+  save_shits()
+}
 
+// clear the shits from memory
+document.getElementById("clearShit").onclick = function() {
+  ga('send', 'event', 'button', 'clearShit', 'Front Page')
+
+  clear_table()
+  var allfrshits = [""]
+  var alltoshits = [""]
+
+  // remove any fr/to shits
+  chrome.storage.sync.remove(shitholder, function() {
+    if (chrome.runtime.error) {
+      console.log("could not clear: runtime error")
+    } else {
+      console.log("cleared shit successfully")
+    }
+  })
+
+  chrome.storage.sync.set({"allfromshits" : allfrshits}, function() {
+    if (chrome.runtime.error) {
+      console.log("runtime error")
+    } else {
+      console.log("saved allfrshits " + allfrshits)
+    }
+  })
+
+  chrome.storage.sync.set({"alloftoshits" : alltoshits}, function() {
+    if (chrome.runtime.error) {
+      console.log("runtime error")
+    } else {
+      console.log("saved alltoshits " + alltoshits)
+    }
+  })
+}
 
 // save the shits to chrome storage
 // synced with account
@@ -132,46 +172,6 @@ function save_shits() {
   })
   console.log('FROMSHITS ====> ' + allfrshits + " with length " + allfrshits.length)
   console.log('TOSHITS ====> ' + alltoshits)
-}
-
-// call function to save shit to storage
-document.getElementById("saveShit").onclick = function() {
-  ga('send', 'event', 'button', 'saveShit', 'Front Page')
-  save_shits()
-}
-
-// clear the shits from memory
-document.getElementById("clearShit").onclick = function() {
-  ga('send', 'event', 'button', 'clearShit', 'Front Page')
-
-  clear_table()
-  var allfrshits = [""]
-  var alltoshits = [""]
-
-  // remove any fr/to shits
-  chrome.storage.sync.remove(shitholder, function() {
-    if (chrome.runtime.error) {
-      console.log("could not clear: runtime error")
-    } else {
-      console.log("cleared shit successfully")
-    }
-  })
-
-  chrome.storage.sync.set({"allfromshits" : allfrshits}, function() {
-    if (chrome.runtime.error) {
-      console.log("runtime error")
-    } else {
-      console.log("saved allfrshits " + allfrshits)
-    }
-  })
-
-  chrome.storage.sync.set({"alloftoshits" : alltoshits}, function() {
-    if (chrome.runtime.error) {
-      console.log("runtime error")
-    } else {
-      console.log("saved alltoshits " + alltoshits)
-    }
-  })
 }
 
 // clear the table
@@ -239,8 +239,8 @@ function generate_table() {
   // appends <table> into <body>
   body.appendChild(shittable);
   // sets the border attribute of shittable to 2;
-  shittable.setAttribute("border", "2");
-
+  /* shittable.setAttribute("border", "1");
+   */
   // clear the icons before redrawing new ones
   remove_icons()
   // draw new ones

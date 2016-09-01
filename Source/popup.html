@@ -3,23 +3,32 @@
   <head>
     <meta charset="utf-8"/>
     <style>
-      body {background-color: #6F1A07;}
+      body {background-color: #FFA737}
     </style>
+    <link href="popup.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div id="data"></div>
-    <div id="data2"></div>
-    <input type="text" id="frshit"/>
-    <input type="text" id="toshit"/>
+    <div class="inputBox">
+      <input type="text" id="frshit" placeholder="From"/>
+    </div>
+    <div class="inputBox">
+      <input type="text" id="toshit" placeholder="To"/>
+    </div>
 
-    <button id="showShit"> Show Your Sht </button>
-    <button id="saveShit"> Save Your Sht </button>
-    <button id="clearShit"> Clear Your Sht </button>
+    <div class="wrapper">
+      <button class="button" id="showShit"> Show Your Sht </button>
+    </div>
+    <div class="wrapper">
+      <button class="button" id="saveShit"> Save Your Sht </button>
+    </div>
+    <div class="wrapper">
+      <button class="button" id="clearShit"> Clear Your Sht </button>
+    </div>
     <table id="shittable" boder="2" align="center">
       <tbody id="shittablebody">
 	<thead>
-	  <th background-color="#E6AA68">From</th>
-	  <th background-color="#E6AA68">To</th>
+	  <th>From</th>
+	  <th>To</th>
 	  <!-- <th colspan="2"> -->
 	  <!--   <button id="insertitem">New Item</button> -->
 	  <!-- </th> -->

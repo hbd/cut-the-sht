@@ -4,23 +4,85 @@
    Zak Keener
 */
 
+// google-analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83539279-1', 'auto');
+ga('set', 'checkProtocolTask', function(){});
+ga('require', 'displayfeatures');
+ga('send', 'pageview', '/popup.html');
+ga('trackEvent');
+
+
+// cut-the-sht
 var allfrshits = [] // all of the f/t shit pairs
 var alltoshits = []
+var shitholder = ['allfromshits', 'alloftoshits']
 
 window.onload = function() {
   console.log("sensed an opening");
-
+  save_shits()
+  console.log("INIT FRSHIT "+ allfrshits)
+  console.log("INIT TOSHIT "+ alltoshits)
   generate_table()
 }
 
-document.getElementById("close").onclick = function() {
-  console.log("close");
-  window.close();
+// add social media icons to the popup
+function add_icons() {
+  // get the reference for the body
+  var body = document.getElementsByTagName("body")[0];
+
+  var aInsta = document.createElement("a")
+  var instaIconURL = chrome.extension.getURL("/images/instagram_icon.png")
+  var instagramPageURL = "https://instagram.com/cutthesht"
+  var instaIcon = document.createElement("img")
+
+  aInsta.href = instagramPageURL
+  aInsta.target = "_blank"
+
+  instaIcon.src = instaIconURL
+  instaIcon.alt = "Share on Instagram!"
+
+  aInsta.appendChild(instaIcon)
+  body.appendChild(aInsta)
+
+  var aTwit = document.createElement("a")
+  var twitIconURL = chrome.extension.getURL("/images/twitter_icon.png")
+  var twitPageURL = "https://twitter.com/cutthesht"
+  var twitIcon = document.createElement("img")
+
+  twitIcon.src = twitIconURL
+  twitIcon.alt = "Share on Twitter!"
+
+  aTwit.href = twitPageURL
+  aTwit.target = "_blank"
+
+  aTwit.appendChild(twitIcon)
+  body.appendChild(aTwit)
+
 }
 
-document.getElementById("saveshit").onclick = function() {
+// remove icons from the popup
+function remove_icons() {
+  $('img').replaceWith(function() {
+    return this.innerHTML;
+  })
+}
 
-  var shitholder = ['allfromshits', 'alloftoshits']
+// show the shit in the table
+document.getElementById("showShit").onclick = function() {
+  ga('send', 'event', 'button', 'showShit', 'Popup Buttons')
+  clear_table()
+  generate_table();
+}
+
+
+// save the shits to chrome storage
+// synced with account
+function save_shits() {
   var frshit = document.getElementById("frshit").value;
   var toshit = document.getElementById("toshit").value;
 
@@ -30,9 +92,12 @@ document.getElementById("saveshit").onclick = function() {
       // update from shits
       allfrshits = items.allfromshits
       console.log("retrieved allfromshits " + allfrshits)
-      // add the from shit
-      allfrshits.push(frshit)
-      console.log("pushed a frshit " + allfrshits)
+
+      if (frshit.length > 0) {
+        // add the from shit
+        allfrshits.push(frshit)
+        console.log("pushed a frshit " + allfrshits)
+      }
 
       chrome.storage.sync.set({"allfromshits" : allfrshits}, function() {
         if (chrome.runtime.error) {
@@ -42,12 +107,16 @@ document.getElementById("saveshit").onclick = function() {
         }
       })
 
+
       // update to shits
       alltoshits = items.alloftoshits
       console.log("retrieved alltoshits " + alltoshits)
-      // add the to shit
-      alltoshits.push(toshit)
-      console.log("pushed a frshit " + allfrshits)
+
+      if (toshit.length > 0) {
+        // add the to shit
+        alltoshits.push(toshit)
+        console.log("pushed a frshit " + allfrshits)
+      }
 
       chrome.storage.sync.set({"alloftoshits" : alltoshits}, function() {
         if (chrome.runtime.error) {
@@ -61,31 +130,81 @@ document.getElementById("saveshit").onclick = function() {
       console.log("runtime error")
     }
   })
-  console.log('FROMSHITS ====> ' + allfrshits)
+  console.log('FROMSHITS ====> ' + allfrshits + " with length " + allfrshits.length)
   console.log('TOSHITS ====> ' + alltoshits)
-
-
-  generate_table()
 }
 
-function generate_table() {
+// call function to save shit to storage
+document.getElementById("saveShit").onclick = function() {
+  ga('send', 'event', 'button', 'saveShit', 'Front Page')
+  save_shits()
+}
 
-  // get the reference for the body
-  var body = document.getElementsByTagName("body")[0];
+// clear the shits from memory
+document.getElementById("clearShit").onclick = function() {
+  ga('send', 'event', 'button', 'clearShit', 'Front Page')
 
-  // creates a <table> element and a <tbody> element
-  /* var tbl     = document.createElement("table");
-   * var tblBody = document.createElement("tbody");*/
+  clear_table()
+  var allfrshits = [""]
+  var alltoshits = [""]
+
+  // remove any fr/to shits
+  chrome.storage.sync.remove(shitholder, function() {
+    if (chrome.runtime.error) {
+      console.log("could not clear: runtime error")
+    } else {
+      console.log("cleared shit successfully")
+    }
+  })
+
+  chrome.storage.sync.set({"allfromshits" : allfrshits}, function() {
+    if (chrome.runtime.error) {
+      console.log("runtime error")
+    } else {
+      console.log("saved allfrshits " + allfrshits)
+    }
+  })
+
+  chrome.storage.sync.set({"alloftoshits" : alltoshits}, function() {
+    if (chrome.runtime.error) {
+      console.log("runtime error")
+    } else {
+      console.log("saved alltoshits " + alltoshits)
+    }
+  })
+}
+
+// clear the table
+function clear_table() {
+  console.log("CLEARING TABLE")
   var shittable = document.getElementById('shittable')
-  var shittablebody = document.getElementById('shittablebody')
 
   // clear the table
   while(shittable.rows.length > 1) {
     shittable.deleteRow(1);
   }
+}
+
+function generate_table() {
+
+  console.log("MAKING TABLE")
+
+  console.log("TABLE FRSHIT "+ allfrshits)
+  console.log("TABLE TOSHIT "+ alltoshits)
+
+  // get the reference for the body
+  var body = document.getElementsByTagName("body")[0];
+
+  // creates a <table> element and a <tbody> element
+  var shittable = document.getElementById('shittable')
+  var shittablebody = document.getElementById('shittablebody')
 
   // creating all cells
   for (var i = 0; i < allfrshits.length; i++) {
+    if (allfrshits[i] === "" || alltoshits[i] === "") {
+      continue;
+    }
+
     // creates a table row
     var row = document.createElement("tr");
 
@@ -96,6 +215,7 @@ function generate_table() {
         // the end of the table row
         var cell = document.createElement("td");
         var cellText = document.createTextNode(allfrshits[i].toString());
+        console.log("ADDING CELL " + cellText)
         cell.appendChild(cellText);
         row.appendChild(cell);
       } else {
@@ -104,6 +224,7 @@ function generate_table() {
         // the end of the table row
         var cell = document.createElement("td");
         var cellText = document.createTextNode(alltoshits[i].toString());
+        console.log("ADDING CELL " + cellText)
         cell.appendChild(cellText);
         row.appendChild(cell);
       }
@@ -119,81 +240,9 @@ function generate_table() {
   body.appendChild(shittable);
   // sets the border attribute of shittable to 2;
   shittable.setAttribute("border", "2");
+
+  // clear the icons before redrawing new ones
+  remove_icons()
+  // draw new ones
+  add_icons()
 }
-
-
-
-/* /* var body = document.getElementsByTagName('body');
- *  * var el = document.getElementById('ids')
- *  * el.innerHTML = '<p><a id="clickme" href="#">Click me</a></p>';
- *  * document.getElementById('clickme').onclick = function (e) {
- *  *   e.preventDefault();
- *  *   document.body.innerHTML +='<div> YO!!!!! </div>';
- *    * }
- * 
- * var shittable = document.getElementById('shittable')
- * while (shittable.rows[0]) shittable.deleteRow(0);
- * 
- * 
- * for (var i = 0; i < frshit.length; i++) {
- *   console.log('<<< FRSHITS ====> ' + allfrshits)
- *   console.log('<<< TOSHITS ====> ' + alltoshits)
- * 
- *   // draw the table
- *   var row = document.getElementById('shittable').insertRow();
- * 
- *   console.log('i before: ' + i)
- *   // Insert a cell in the row at index 0
- *   var firstcell  = row.insertCell(i);
- *   // Append a text node to the cell
- *   var frshittext = allfrshits[i]
- *   frshittext  = document.createTextNode(frshittext.toString());
- *   firstcell.appendChild(frshittext)
- * 
- *   console.log('i after: ' + i)
- * 
- *   // Insert a cell in the row at index 0
- *   var secondcell  = row.insertCell(i);
- *   // Append a text node to the cell
- *   var toshittext = alltoshits[i+1]
- *   toshittext  = document.createTextNode(toshittext.toString());
- *   secondcell.appendChild(toshittext)
- * }
-   // get the current number of shits submitted
-   chrome.storage.sync.get("numberofshits", function(items) {
-   console.log(items)
-
-   if (!chrome.runtime.error) {
-   if (items.numberofshits == null) {
-   console.log("numshits undefined")
-   numshits = 1
-   } else {
-
-   // increment the numshits value
-   numshits = (items.numberofshits).valueOf()
-   numshits = numshits + 1;
-   console.log('added 1 to numshits: ' + numshits)
-
-   // store the new value in memory
-   chrome.storage.sync.set({ "numberofshits" : numshits}, function() {
-   if (chrome.runtime.error) {
-   console.log("Runtime error.")
-   } else {
-   console.log("saved numshits " + numshits)
-   }
-   })
-
-   // display new number of shits
-   document.getElementById("numshitsspan").textContent=numshits;
-   }
-
-   console.log("retrieved numshits: " + numshits)
-   } else {
-   console.log("error getting numshits")
-   }
-   })
-
-
-
-
- * */

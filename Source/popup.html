@@ -2,6 +2,9 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8"/>
+    <style>
+      body {background-color: #6F1A07;}
+    </style>
   </head>
   <body>
     <div id="data"></div>
@@ -9,13 +12,14 @@
     <input type="text" id="frshit"/>
     <input type="text" id="toshit"/>
 
-    <button id="close"> Close </button>
-    <button id="saveshit"> Save Your Shit </button>
+    <button id="showShit"> Show Your Sht </button>
+    <button id="saveShit"> Save Your Sht </button>
+    <button id="clearShit"> Clear Your Sht </button>
     <table id="shittable" boder="2" align="center">
       <tbody id="shittablebody">
 	<thead>
-	  <th>From</th>
-	  <th>To</th>
+	  <th background-color="#E6AA68">From</th>
+	  <th background-color="#E6AA68">To</th>
 	  <!-- <th colspan="2"> -->
 	  <!--   <button id="insertitem">New Item</button> -->
 	  <!-- </th> -->
@@ -24,5 +28,6 @@
     </table>
 
     <script src="popup.js"></script>
+    <script type="text/javascript" src="jquery.slim.min.js"></script>
   </body>
 </html>

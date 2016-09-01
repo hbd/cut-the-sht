@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(function() {
   var numshits = 0
-  console.log('INSTALLED!')
+  console.log('CUT THE SHT INSTALLED!')
   chrome.storage.sync.set({ "numberofshits" : numshits}, function() {
     if (chrome.runtime.error) {
       console.log("Runtime error.")
@@ -9,8 +9,8 @@ chrome.runtime.onInstalled.addListener(function() {
     }
   })
 
-  var firstfrshit = ["terrorist"]
-  var firsttoshit = ["scum"]
+  var firstfrshit = [""]
+  var firsttoshit = [""]
 
   console.log("changing shits upon install")
 

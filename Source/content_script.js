@@ -2,6 +2,7 @@ walk(document.body);
 
 function walk(node)
 {
+  console.log("WALKING")
 	// I stole this function from here:
 	// http://is.gd/mwZp7E
 
@@ -30,27 +31,26 @@ function walk(node)
 function handleText(textNode)
 {
   var v = textNode.nodeValue;
-  var frshit = "";
-  var toshit = "";
-  var shits = ["fromshit", "toshit"];
+  var shitholder = ['allfromshits', 'alloftoshits']
 
-
-  console.log("CHANGED!!")
-  chrome.storage.sync.get(shits, function(items) {
+  console.log("IN CONTENT SCRIPT")
+  chrome.storage.sync.get(shitholder, function(items) {
     if (!chrome.runtime.error) {
       console.log(items);
-      console.log("frshit: " + items.fromshit)
-      console.log("toshit: " + items.toshit)
-      frshit = items.fromshit;
-      toshit = items.toshit;
- }
+      console.log("frshit: " + items.allfromshits)
+      console.log("toshit: " + items.alloftoshits)
+      var allfrshits = items.allfromshits
+      var alltoshits = items.alloftoshits
 
-    var reg = new RegExp(frshit, 'gi') // i: case-insensitive
+      for (var i = 0; i < allfrshits.length; i++) {
+        var reg = new RegExp(allfrshits[i], 'gi') // i: case-insensitive
 
-    console.log("REPLACING "+ reg +" with "+ toshit)
-    v = v.replace(reg, toshit);
+        console.log("REPLACING "+ reg +" with "+ alltoshits[i])
+        v = v.replace(reg, alltoshits[i]);
 
-    textNode.nodeValue = v;
+        textNode.nodeValue = v;
+      }
+    }
   });
 }
 

@@ -30,49 +30,6 @@ window.onload = function() {
   generate_table()
 }
 
-// add social media icons to the popup
-function add_icons() {
-  // get the reference for the body
-  var body = document.getElementsByTagName("body")[0];
-
-  var aInsta = document.createElement("a")
-  var instaIconURL = chrome.extension.getURL("/images/instagram_icon.png")
-  var instagramPageURL = "https://instagram.com/cutthesht"
-  var instaIcon = document.createElement("img")
-
-  aInsta.href = instagramPageURL
-  aInsta.target = "_blank"
-
-  instaIcon.src = instaIconURL
-  instaIcon.alt = "Share on Instagram!"
-  instaIconURL.align = "left"
-
-  aInsta.appendChild(instaIcon)
-  body.appendChild(aInsta)
-
-  var aTwit = document.createElement("a")
-  var twitIconURL = chrome.extension.getURL("/images/twitter_icon.png")
-  var twitPageURL = "https://twitter.com/cutthesht"
-  var twitIcon = document.createElement("img")
-
-  twitIcon.src = twitIconURL
-  twitIcon.alt = "Share on Twitter!"
-  twitIcon.align = "right"
-
-  aTwit.href = twitPageURL
-  aTwit.target = "_blank"
-
-  aTwit.appendChild(twitIcon)
-  body.appendChild(aTwit)
-
-}
-
-// remove icons from the popup
-function remove_icons() {
-  $('img').replaceWith(function() {
-    return this.innerHTML;
-  })
-}
 
 // show the shit in the table
 document.getElementById("showShit").onclick = function() {
@@ -90,7 +47,6 @@ document.getElementById("saveShit").onclick = function() {
 document.getElementById("clearShit").onclick = function() {
   ga('send', 'event', 'button', 'clearShit', 'Front Page')
 
-  clear_table()
   var allfrshits = [""]
   var alltoshits = [""]
 
@@ -99,7 +55,7 @@ document.getElementById("clearShit").onclick = function() {
     if (chrome.runtime.error) {
       console.log("could not clear: runtime error")
     } else {
-      console.log("cleared shit successfully")
+      console.log("cleared shit successfully: " + allfrshits + " " + alltoshits)
     }
   })
 
@@ -108,6 +64,7 @@ document.getElementById("clearShit").onclick = function() {
       console.log("runtime error")
     } else {
       console.log("saved allfrshits " + allfrshits)
+  console.log("cleared shit successfully: " + allfrshits + " " + alltoshits)
     }
   })
 
@@ -116,8 +73,12 @@ document.getElementById("clearShit").onclick = function() {
       console.log("runtime error")
     } else {
       console.log("saved alltoshits " + alltoshits)
+  console.log("cleared shit successfully: " + allfrshits + " " + alltoshits)
     }
   })
+  console.log("cleared shit successfully: " + allfrshits + " " + alltoshits)
+
+  clear_table()
 }
 
 // save the shits to chrome storage
@@ -174,6 +135,55 @@ function save_shits() {
   console.log('TOSHITS ====> ' + alltoshits)
 }
 
+
+
+// add social media icons to the popup
+function add_icons() {
+  // get the reference for the body
+  var body = document.getElementsByTagName("body")[0];
+
+  var aInsta = document.createElement("a")
+  var instaIconURL = chrome.extension.getURL("/images/instagram_icon.png")
+  var instagramPageURL = "https://instagram.com/cutthesht"
+  var instaIcon = document.createElement("img")
+
+  aInsta.href = instagramPageURL
+  aInsta.target = "_blank"
+
+  instaIcon.src = instaIconURL
+  instaIcon.alt = "Share on Instagram!"
+  instaIconURL.align = "left"
+
+  aInsta.appendChild(instaIcon)
+  body.appendChild(aInsta)
+
+  var aTwit = document.createElement("a")
+  var twitIconURL = chrome.extension.getURL("/images/twitter_icon.png")
+  var twitPageURL = "https://twitter.com/cutthesht"
+  var twitIcon = document.createElement("img")
+
+  twitIcon.src = twitIconURL
+  twitIcon.alt = "Share on Twitter!"
+  twitIcon.align = "right"
+
+  aTwit.href = twitPageURL
+  aTwit.target = "_blank"
+
+  aTwit.appendChild(twitIcon)
+  body.appendChild(aTwit)
+
+}
+
+// remove icons from the popup
+function remove_icons() {
+  $('img').replaceWith(function() {
+    return this.innerHTML;
+  })
+}
+
+
+
+
 // clear the table
 function clear_table() {
   console.log("CLEARING TABLE")
@@ -192,57 +202,75 @@ function generate_table() {
   console.log("TABLE FRSHIT "+ allfrshits)
   console.log("TABLE TOSHIT "+ alltoshits)
 
-  // get the reference for the body
-  var body = document.getElementsByTagName("body")[0];
+  chrome.storage.sync.get(shitholder, function(items) {
+    console.log('GETTING SHITS IN TABLE')
+    if (!chrome.runtime.error) {
 
-  // creates a <table> element and a <tbody> element
-  var shittable = document.getElementById('shittable')
-  var shittablebody = document.getElementById('shittablebody')
+      // update from shits
+      allfrshits = items.allfromshits
+      console.log("retrieved allfromshits " + allfrshits)
 
-  // creating all cells
-  for (var i = 0; i < allfrshits.length; i++) {
-    if (allfrshits[i] === "" || alltoshits[i] === "") {
-      continue;
-    }
+      // update to shits
+      alltoshits = items.alloftoshits
+      console.log("retrieved alltoshits " + alltoshits)
 
-    // creates a table row
-    var row = document.createElement("tr");
 
-    for (var j = 0; j < 2; j++) {
-      if (j%2 === 0) {
-        // Create a <td> element and a text node, make the text
-        // node the contents of the <td>, and put the <td> at
-        // the end of the table row
-        var cell = document.createElement("td");
-        var cellText = document.createTextNode(allfrshits[i].toString());
-        console.log("ADDING CELL " + cellText)
-        cell.appendChild(cellText);
-        row.appendChild(cell);
-      } else {
-        // Create a <td> element and a text node, make the text
-        // node the contents of the <td>, and put the <td> at
-        // the end of the table row
-        var cell = document.createElement("td");
-        var cellText = document.createTextNode(alltoshits[i].toString());
-        console.log("ADDING CELL " + cellText)
-        cell.appendChild(cellText);
-        row.appendChild(cell);
+      // get the reference for the body
+      var body = document.getElementsByTagName("body")[0];
+
+      // creates a <table> element and a <tbody> element
+      var shittable = document.getElementById('shittable')
+      var shittablebody = document.getElementById('shittablebody')
+
+      // creating all cells
+      for (var i = 0; i < allfrshits.length; i++) {
+	if (allfrshits[i] === "" || alltoshits[i] === "") {
+	  continue;
+	}
+
+	// creates a table row
+	var row = document.createElement("tr");
+
+	for (var j = 0; j < 2; j++) {
+	  if (j%2 === 0) {
+            // Create a <td> element and a text node, make the text
+            // node the contents of the <td>, and put the <td> at
+            // the end of the table row
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(allfrshits[i].toString());
+            console.log("ADDING CELL " + cellText)
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+	  } else {
+            // Create a <td> element and a text node, make the text
+            // node the contents of the <td>, and put the <td> at
+            // the end of the table row
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(alltoshits[i].toString());
+            console.log("ADDING CELL " + cellText)
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+	  }
+	}
+
+	// add the row to the end of the table body
+	shittablebody.appendChild(row);
       }
+
+      // put the <tbody> in the <table>
+      shittable.appendChild(shittablebody);
+      // appends <table> into <body>
+      body.appendChild(shittable);
+      // sets the border attribute of shittable to 2;
+      /* shittable.setAttribute("border", "1");
+       */
+      // clear the icons before redrawing new ones
+      remove_icons()
+      // draw new ones
+      add_icons()
+    } else {
+      console.log("runtime error")
     }
+  })
 
-    // add the row to the end of the table body
-    shittablebody.appendChild(row);
-  }
-
-  // put the <tbody> in the <table>
-  shittable.appendChild(shittablebody);
-  // appends <table> into <body>
-  body.appendChild(shittable);
-  // sets the border attribute of shittable to 2;
-  /* shittable.setAttribute("border", "1");
-   */
-  // clear the icons before redrawing new ones
-  remove_icons()
-  // draw new ones
-  add_icons()
 }

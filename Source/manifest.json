@@ -1,6 +1,6 @@
 {
-  "name": "Cut the Shit",
-  "version": "1.2",
+  "name": "Cut the Sht",
+  "version": "1.3",
   "manifest_version": 2,
   "description": "Replaces some shit with other shit.",
   "icons": { "16": "images/button_icon16.png",
@@ -11,7 +11,7 @@
   },
   "permissions": ["storage", "tabs"],
   "background": {
-    "scripts": ["background.js", "eventPage.js"],
+    "scripts": ["eventPage.js"],
     "persistent": false
   },
   "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",

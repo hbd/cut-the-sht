@@ -30,6 +30,9 @@ window.onload = function() {
   generate_table()
 }
 
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 // show the shit in the table
 document.getElementById("showShit").onclick = function() {
@@ -41,6 +44,12 @@ document.getElementById("showShit").onclick = function() {
 document.getElementById("saveShit").onclick = function() {
   ga('send', 'event', 'button', 'saveShit', 'Front Page')
   save_shits()
+
+  // Usage!
+  sleep(100).then(() => {
+    clear_table()
+    generate_table()
+  })
 }
 
 // clear the shits from memory
@@ -94,6 +103,8 @@ function save_shits() {
       allfrshits = items.allfromshits
       console.log("retrieved allfromshits " + allfrshits)
 
+      frshit = frshit.replace(/[^A-Za-z0-9 ]/g, '')
+
       if (frshit.length > 0) {
         // add the from shit
         allfrshits.push(frshit)
@@ -112,6 +123,8 @@ function save_shits() {
       // update to shits
       alltoshits = items.alloftoshits
       console.log("retrieved alltoshits " + alltoshits)
+
+      toshit = toshit.replace(/[^A-Za-z0-9 ]/g, '')
 
       if (toshit.length > 0) {
         // add the to shit
@@ -182,8 +195,6 @@ function remove_icons() {
 }
 
 
-
-
 // clear the table
 function clear_table() {
   console.log("CLEARING TABLE")
@@ -224,7 +235,7 @@ function generate_table() {
 
       // creating all cells
       for (var i = 0; i < allfrshits.length; i++) {
-	if (allfrshits[i] === "" || alltoshits[i] === "") {
+	if (allfrshits[i] === " " || alltoshits[i] === " ") {
 	  continue;
 	}
 

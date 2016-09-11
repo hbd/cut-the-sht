@@ -8,6 +8,7 @@
     <link href="popup.css" rel="stylesheet" type="text/css">
   </head>
   <body>
+    <p id="refreshText"></p>
     <div class="inputBox">
       <input type="text" id="frshit" placeholder="From"/>
     </div>
@@ -16,22 +17,16 @@
     </div>
 
     <div class="wrapper">
-      <button class="button" id="showShit"> Show Your Sht </button>
+      <button type="button" class="button_uno" id="saveShit"> Save Your 💩 </button>
     </div>
-    <div class="wrapper">
-      <button class="button" id="saveShit"> Save Your Sht </button>
-    </div>
-    <div class="wrapper">
-      <button class="button" id="clearShit"> Clear Your Sht </button>
+    <div class="wrapper_dos">
+      <button type="button" class="button_dos" id="clearShit"> Clear </button>
     </div>
     <table id="shittable" boder="2" align="center">
       <tbody id="shittablebody">
 	<thead>
 	  <th>From</th>
 	  <th>To</th>
-	  <!-- <th colspan="2"> -->
-	  <!--   <button id="insertitem">New Item</button> -->
-	  <!-- </th> -->
       </thead>
       </tbody>
     </table>

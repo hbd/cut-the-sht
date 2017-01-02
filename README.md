@@ -12,4 +12,4 @@ Installation
 
 Install from the Chrome Store found [here](https://chrome.google.com/webstore/detail/cut-the-sht/bbmljkeiicolcccnoiefdhpjchncinfk?hl=en-US&authuser=4).
 
-Alternatively, choose Window > Extensions.  Drag cutthesht.crx into the page that appears.
+Alternatively, install the extension from source using [this](https://www.mattcutts.com/blog/how-to-install-a-chrome-extension-from-github/) guide.

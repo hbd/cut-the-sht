@@ -1,7 +1,7 @@
-cloud-to-butt
+Cut the Sht
 =============
 
-![](logo.png)
+![](images/demo.gif)
 
 Chrome extension that replaces occurrences of 'the cloud' with 'my butt'
 

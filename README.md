@@ -1,8 +1,6 @@
 Cut the Sht
 =============
 
-![](images/demo.gif)
-
 Chrome extension that replaces occurrance of words specified by you with other words (also) specified by you. Have fun!
 
 Installation
